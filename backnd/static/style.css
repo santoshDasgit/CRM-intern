@@ -1,0 +1,41 @@
+/* navbar <---- header.html  */
+nav .left , .right{
+width: fit-content;
+}
+nav{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 5px 15px;
+    background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(249,232,51,1) 0%, rgba(250,196,59,1) 100.2% );
+}
+nav .right a{
+    background-color: white;
+    padding: 5px;
+    border: 0px;
+}
+nav .right{
+    display: flex;
+    height: fit-content;
+}
+
+
+/* admin dashboard  <----- senior_teacher/dashboard.html */
+.admin-dashboard h1{
+    font-family: fantasy;
+}
+
+.admin-dashboard p{
+    font-weight: lighter;
+    font-family: monospace;
+}
+
+/* admin dashboard  <----- senior_teacher/edit_user.html */
+.edit-user h1{
+    font-family: fantasy;
+}
+
+.user-details-table{
+    width: 100%;
+    overflow-x: scroll;
+}

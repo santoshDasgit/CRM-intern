@@ -1,0 +1,87 @@
+{% extends 'header.html' %}
+
+{% block body %}
+
+{% include "msg.html" %}  {% comment %} Including msg.html for django message framework porpose {% endcomment %}
+
+
+
+
+<!-- Button trigger modal and dashbord introduction -->
+<div class="container my-2 admin-dashboard">
+<div class="row">
+  <div class="col-md-8">
+    <h1>Senior teachers</h1>
+    <p>Dashbord / Senior teachers dashboard</p>
+  </div>
+  <div class="col-md-4">
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+      Add user
+     </button>
+  
+  </div>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form  method="post">
+          {% csrf_token %}
+          {{fm}}
+          <br>
+          <input type="submit" class='btn btn-secondary' value = 'create user'>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %} table  {% endcomment %}
+<div class='container border mt-4 user-details-table'>
+  <h1 class='text-center'>Teacher data</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">no</th>
+        <th scope="col">Id</th>
+        <th scope="col">email</th>
+        <th scope="col">first name</th>
+        <th scope="col">last name</th>
+        <th scope="col">is active</th>
+        <th scope="col">is admin</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+      {% for i in user %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td><b>{{i.id}}</b></td>
+        <td>{{i.email}}</td>
+        <td>{{i.first_name|capfirst}}</td>
+        <td>{{i.last_name|capfirst}}</td>
+        <td class={% if i.is_active %}'text-primary'{% else %}'text-danger'{% endif %}>{{i.is_active}}</td>
+        <td class={% if i.is_admin %}'text-primary'{% else %}'text-danger'{% endif %}>{{i.is_admin}}</td>
+        <td>
+          <a href="{% url 'senior_teacher_edit_user' i.id %}" class='btn btn-primary'>Edit</a>
+          <a href="{% url 'senior_teacher_delete_user' i.id %}" class='btn btn-danger'>Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+{% endblock body %}

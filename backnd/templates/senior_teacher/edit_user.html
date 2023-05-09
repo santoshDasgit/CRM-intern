@@ -1,0 +1,15 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container edit-user">
+    {% include "msg.html" %}
+    <h1 class='text-center'>User Edit</h1>
+    <form action="" method="post" class='shadow p-3'>
+        {% csrf_token %}
+        {{fm}}
+        <br>
+        <button class='btn btn-primary my-2' type='submit'>Changed</button>
+        <a href="{% url 'home' %}" class='btn btn-secondary'>Back</a>
+    </form>
+</div>
+{% endblock body %}
