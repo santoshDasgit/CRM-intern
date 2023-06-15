@@ -143,5 +143,8 @@ STATICFILES_DIRS = [
 ]
 
 
-# COSTUMIER USER 
-AUTH_USER_MODEL = 'app.user'
+
+
+
+# USER  - s@gmail.com
+# pass - 9078784709

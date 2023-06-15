@@ -1,0 +1,285 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container">
+    {% include "msg.html" %}
+    <div class="row">
+        <div class="col-md-5">
+            <form action="" method="post" class='p-3 shadow formFm'>
+                {% csrf_token %}
+                <marquee behavior="" direction="right"><label for="" class='text-success'>* After the cerate filled must click add button</label></marquee>
+                <label for="" class="mt-2">Table name here</label>
+                <input type="text" class='form-control  table_name mb-5' placeholder='Table name' required>
+                <input type="text" class='form-control my-1 label_name' placeholder='label name' required>
+                <select name="" id="" class='form-control'>
+                    <option value="">Choice Type</option>
+                    <option value="text">Text</option>
+                    <option value="textarea">Textarea</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="time">Time</option>
+                    <option value="select">Select</option>
+                    <option value="radio">Radio</option>
+                    
+                </select>
+                <label for="">Is mandatory</label> : <input type="checkbox" class="required_inp"> <br>
+                <div class="mt-5 option_add_div">
+                    <div>
+
+                    </div>
+                    <input type="text" name="" id="" class="form-control mt-4" placeholder="add option">
+                    <button type="button" class="btn btn-success">+</button>
+
+                </div>
+
+                <div class="mt-5 radio_add_div">
+                    <div class="ch-div">
+
+                    </div>
+                    <input type="text" name="" id="" class="form-control mt-4" placeholder="add radio">
+                    <button type="button" class="btn btn-success">+</button>
+
+                </div>
+                <button type="submit" class='btn btn-primary my-2'>Add</button>
+                <a href="{% url 'html_form_list' %}" class="btn btn-secondary">Back</a>
+
+
+            </form>
+        </div>
+        <div class="col-md-7 ">
+            <div class="row mb-3">
+                <label for="">Before input check the condition</label>
+                <ul>
+                    <li>Field name first character must not be a Number </li>
+                    <li>Form name first character must not be a Number </li>
+                    <li>Field name not be duplicate </li>
+                </ul>
+            </div>
+            <div class="row form_create">
+                {% comment %} All generated inside this {% endcomment %}
+                
+            </div>
+
+            <div class="row">
+                <form action="{% url 'html_form_save' %}" class="form_create_fm">
+                    <input type="hidden" name="html_fields_input" class="input1">
+                    <input type="hidden" name="query_fields_input" class="input2">
+                    <input type="hidden" name="table_name_input" class="table_name_hidden_input">
+                    <button type="submit" class="btn btn-primary my-3 w-25">Create form</button>
+                </form>
+            </div>
+
+          
+        </div>
+    </div>
+</div>
+<script>
+    let fieldList = [];
+
+
+    let formFm = document.querySelector('.formFm')
+    let input_type = document.querySelector('.formFm > select')
+    let input_create_div = document.querySelector('.form_create')
+    let label_name = document.querySelector('.formFm > .label_name')
+    let innerElement = ""
+
+    // select option input
+    let optionValue = ""
+    let option_div = document.querySelector('.option_add_div')
+    let option_inp = document.querySelector('.option_add_div > input')
+    let option_btn = document.querySelector('.option_add_div > button')
+    let option_div_child = document.querySelector('.option_add_div > div')
+    option_div.style.display = 'none';
+
+
+    // radio input
+    let radio_value = " ";
+    let radio_div = document.querySelector('.radio_add_div')
+    let radio_btn = document.querySelector('.radio_add_div > button')
+    let radio_inp = document.querySelector('.radio_add_div > input')
+    let radio_ch_div = document.querySelector('.radio_add_div > .ch-div')
+    radio_div.style.display = 'none'
+
+    let required_inp = document.querySelector('.required_inp')
+    let form_create_fm = document.querySelector('.form_create_fm')
+    form_create_fm.style.display = 'none';
+
+    let table_name_inp = document.querySelector('.table_name')
+
+    let table_name_hidden_input = document.querySelector('.table_name_input')
+
+    function formFieldFn(params) {
+        if (input_type.value == 'text') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+                <input type="text" class = "${label_name.value.replace(/ /g, "_")} input_box" ${required_inp.checked?'required':''}>
+                </div>
+                <br/>
+                `
+        fieldList.push(`_${label_name.value.replace(/ /g, "_")} varchar(500)`)
+
+        } else if (input_type.value == 'textarea') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+                <textarea name="" id="" cols="30" rows="10" class="${label_name.value.replace(/ /g, "_")} input_box" ${required_inp.checked?'required':''}></textarea>
+                </div>
+                <br/>
+                `
+
+                fieldList.push(`_${label_name.value.replace(/ /g, "_")} varchar(500)`)
+        }
+        else if (input_type.value == 'number') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+                <input type="number" class = "${label_name.value.replace(/ /g, "_")} input_box" ${required_inp.checked?'required':''}>
+                </div>
+                <br/>
+                `
+                fieldList.push(`_${label_name.value.replace(/ /g, "_")} int`)
+        }
+        else if (input_type.value == 'date') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+                <input type="date" class = "${label_name.value.replace(/ /g, "_")} input_box" ${required_inp.checked?'required':''}>
+                </div>
+                <br/>
+                `
+                fieldList.push(`_${label_name.value.replace(/ /g, "_")} varchar(50)`)
+        }
+        else if (input_type.value == 'time') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+                <input type="time" class = "${label_name.value.replace(/ /g, "_")} input_box" ${required_inp.checked?'required':''}>
+                </div>
+                <br/>
+                `
+                fieldList.push(`_${label_name.value.replace(/ /g, "_")} varchar(50)`)
+        }
+        else if (input_type.value == 'select') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+             
+                <select name="" id="" class = "${label_name.value.replace(/ /g, "_")} input_box" ${required_inp.checked?'required':''}>
+                 ${optionValue}
+                </select>
+                </div>
+                <br/>
+                `
+                fieldList.push(`_${label_name.value.replace(/ /g, "_")} varchar(500)`)
+        }
+        else if (input_type.value == 'radio') {
+            innerElement += `<div>
+                <label for="">${label_name.value}</label>
+                <br/>
+             
+               
+                <table>
+                    ${radio_value}    
+                    <input type="hidden" value="123" class="input_box">
+                </table>
+               
+                </div>
+                <br/>
+                `
+                fieldList.push(`_${label_name.value.replace(/ /g, "_")} varchar(500)`)
+        }
+        else {
+            alert("please enter valid data")
+        }
+
+
+        // form create button logic 
+        if(innerElement!="")
+        {
+            form_create_fm.style.display = 'block'
+        }else{
+            form_create_fm.style.display = 'none'
+        }
+
+        input_create_div.innerHTML = innerElement
+        label_name.value = ""
+        table_name_inp.setAttribute('type','button')
+        option_div_child.innerHTML=""
+        radio_ch_div.innerHTML = ""
+        option_inp.value = ""
+        radio_value = ""
+        optionValue = ""
+    }
+
+
+    // option add function 
+    function addOptionFn() {
+      if(option_inp.value != "")
+      {
+        optionValue += `<option value="${option_inp.value}">${option_inp.value}</option>`
+        option_div_child.innerHTML += `<input type="text" name="" id="" class="form-control"  placeholder="add option" value="${option_inp.value}" disabled>`
+        option_inp.value = ""
+      }
+      else{
+        alert("Please mansion the label")
+      }
+
+    }
+    option_btn.addEventListener('click', addOptionFn)
+
+
+
+    // Radio button add function
+    function addRadioFn(e) {
+       if(radio_inp.value != ""){
+            radio_value += `<div>
+                <tr>
+                <td><label for="">${radio_inp.value}</label></td>
+                <td> <input type="radio" value="${radio_inp.value}" class ="${radio_inp.value.replace(/ /g, "_")} input_box" "></td>
+            </tr>    
+            `
+            radio_ch_div.innerHTML+=`${`<input type="text" name="" id="" class="form-control"  placeholder="add option" value="${radio_inp.value}" disabled>`}`
+            radio_inp.value="";
+       }else{
+        alert("Please mansion the label")
+       }
+    }
+    radio_btn.addEventListener('click', addRadioFn)
+   
+     
+
+    // In this through our field will create  
+    formFm.addEventListener('submit', function (e) {
+        e.preventDefault()
+        formFieldFn()
+      
+    })
+        
+    
+    form_create_fm.addEventListener('submit',function(){
+        document.querySelector('.form_create_fm > .input1').value =  innerElement
+        document.querySelector('.form_create_fm > .input2').value = `${String(fieldList)}`
+        document.querySelector('.table_name_hidden_input').value = `${table_name_inp.value.replace(/ /g, "_")}`
+    })
+        
+
+
+
+    // select and radio logic 
+    input_type.addEventListener('change', function (e) {
+        
+        if (e.target.value == 'select') {
+            option_div.style.display = 'block';
+            radio_div.style.display = "none"
+        } else if (e.target.value == 'radio') {
+            radio_div.style.display = "block"
+            option_div.style.display = 'none';
+        }
+        else {
+            radio_div.style.display = "none"
+            option_div.style.display = 'none';
+        }
+    })
+</script>
+{% endblock body %}

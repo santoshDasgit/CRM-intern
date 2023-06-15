@@ -15,7 +15,7 @@
 </head>
 <body>
 <nav>
-    <div class="left"><h5>LOGO</h5></div>
+    <div class="left"><a href="{% url 'home' %}"><h5>LOGO</h5></a></div>
     {% if request.user.is_authenticated %}
     <div class="right"><a href = "{% url 'logout' %}"> Log-out </a></div>
     {% endif %}

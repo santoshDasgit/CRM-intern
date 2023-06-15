@@ -1,0 +1,60 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block body %}
+{% include "msg.html" %}
+<div class="container shadow p-3 w-100">
+  <h2 class='text-center'>Form list</h2>
+  <table class="table table-striped table-hover form-list-details-table">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Form name</th>
+        <th scope="col">User</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in model %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td><b>{{i.table_name|capfirst}}</b></td>
+        <td>{{i.user.username}}</td>
+        <td> {{i.date}}</td>
+        <td>
+          <a href="{% url 'html_form_view' i.pk %}" class='btn btn-primary'>view</a>
+          <button class='btn btn-danger' data-toggle="modal"
+            data-target="#exampleModal{{forloop.counter}}">Delete</button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <span class='text-danger'><b>* {{i.table_name|capfirst}}</b> Conform remove</span>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <a href="{% url 'remove_form_view' i.table_name %}" type="button" class="btn btn-danger">Delete</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+
+      </tr>
+      {% empty %}
+      <marquee behavior="" direction=""><b class="text-danger">*Empty result</b></marquee>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'home' %}" class='btn btn-secondary'>Back</a>
+  <a href="{% url 'form_field' %}" class="btn btn-primary">Create</a>
+</div>
+{% endblock body %}

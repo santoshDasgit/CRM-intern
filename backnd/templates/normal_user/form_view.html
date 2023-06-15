@@ -1,0 +1,106 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container">
+    {% include "msg.html" %}
+    <form action="{% url 'normal_user_form_submit' %}" class='shadow p-3 html-fm'>
+        <h1>{{data.table_name|capfirst}}</h1>
+        {% csrf_token %}
+        {{data.html|safe}}
+        <input type="hidden" value="" class="pass_data_inp" name="pass_data_inp">
+        <input type="hidden" value="_{{data.table_name}}" name="table_name"  class="table_name">
+        <button class='btn btn-primary' type='submit'>Submit</button>
+        <a href="{% url 'normal_user_form' %}" class="btn btn-secondary">Back</a>
+
+    </form>
+</div>
+
+<script>
+    let input_tag = document.querySelectorAll('input')
+    let select_tag = document.querySelectorAll('select')
+    let textarea_tag = document.querySelectorAll('textarea')
+    let html_fm = document.querySelector('.html-fm')
+    let input_box = document.querySelectorAll('.input_box')
+    let pass_data_inp = document.querySelector('.pass_data_inp')
+
+    let inp_arr = []
+
+    for (let i = 0; i < input_tag.length; i++) {
+        if (input_tag[i].getAttribute('type') != 'radio') {
+
+            input_tag[i].classList.add('form-control')
+        }
+    }
+
+    for (let i = 0; i < select_tag.length; i++) {
+        select_tag[i].classList.add('form-control')
+    }
+
+    for (let i = 0; i < textarea_tag.length; i++) {
+        textarea_tag[i].classList.add('form-control')
+    }
+
+    function submitFnLogic(e) {
+        // e.preventDefault()
+
+        let radio_input = false
+        let radio_value = '';
+        let count = 0;
+        for (let i = 0; i < input_box.length; i++) {
+
+            if (input_box[i].value != '') {
+                if (!input_box[i].checked && input_box[i].getAttribute('type') != 'radio') {
+                    if (input_box[i].getAttribute('type') == 'number') {
+                        inp_arr.push(Number(input_box[i].value))
+                    }
+                    input_box[i].getAttribute('type') != 'radio' && input_box[i].getAttribute('type') != 'hidden' && input_box[i].getAttribute('type') != 'number' ? inp_arr.push(input_box[i].value) : ''
+                    count = i + 1;
+                    radio_value = ""
+                }
+                else if (input_box[i].checked) {
+                    radio_value += input_box[i].value + ","
+                    inp_arr[count] = `(${radio_value})`
+                }
+
+                if (input_box[i].getAttribute('type') == 'radio' && !input_box[i].checked && radio_value == '') {
+                    inp_arr[count] = false
+                }
+
+
+            }
+            else {
+                inp_arr.push(false)
+            }
+
+        }
+
+
+
+
+
+        function isString(value) {
+
+            return typeof (value);
+        }
+        function myArrayMap(value) {
+            if(typeof(value)=="string")
+            {
+
+                return `"${value}"`;
+            }
+            else if (typeof(value)=="number") {
+                return value;
+            }else if (value == false){
+                return false
+            }
+        }
+        pass_data_inp.value = String(inp_arr.map(myArrayMap).filter(isString)).replace(/false/g,'null')
+        // console.log(pass_data_inp.value) // <--------------------- value inserted
+        // console.log(pass_data_inp.value)
+        inp_arr = []
+    }
+
+    html_fm.addEventListener('submit', submitFnLogic)
+
+</script>
+{% endblock body %}

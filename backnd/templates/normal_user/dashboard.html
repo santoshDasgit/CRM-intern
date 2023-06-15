@@ -1,0 +1,27 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block body %}
+{% include "msg.html" %}
+
+
+
+
+<!-- Button trigger modal and dashbord introduction -->
+<div class="container my-2 admin-dashboard">
+    <div class="row">
+      <div class="col-md-8">
+        <h1>  {% if user_type == '2' %}Teacher {% else %}Student{% endif %}</h1>
+        <p>Dashbord / {{request.user}}</p>
+      </div>
+      <div class="col-md-4">
+       
+    
+         <a type="button" href="{% url 'normal_user_form' %}" class="btn btn-primary" >
+          Form
+         </a>
+      
+      </div>
+    </div>
+   
+    </div>
+{% endblock body %}

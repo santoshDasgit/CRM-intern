@@ -1,0 +1,30 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container">
+    <form action="" class='shadow p-3'>
+        <h1>{{data.table_name|capfirst}}</h1>
+        {% csrf_token %}
+       {{data.html|safe}}
+       <button class='btn btn-primary' type = 'submit'>Submit</button>
+       <a href="{% url 'html_form_list' %}" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+<script>
+   let input_tag = document.querySelectorAll('input')
+   let select_tag = document.querySelectorAll('select')
+    for (let i = 0; i < input_tag.length; i++) {
+        if(input_tag[i].getAttribute('type')!='radio')
+        {
+
+            input_tag[i].classList.add('form-control')
+        }
+    }
+
+    for (let i = 0; i < select_tag.length; i++) {
+        select_tag[i].classList.add('form-control')
+    }
+        
+</script>
+{% endblock body %}

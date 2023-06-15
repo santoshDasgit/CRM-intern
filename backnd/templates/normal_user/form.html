@@ -1,0 +1,38 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block body %}
+{% include "msg.html" %}
+<div class="container shadow p-3 w-100">
+  <h2 class='text-center'>Form list</h2>
+  <table class="table table-striped table-hover form-list-details-table">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Form name</th>
+        <th scope="col">User</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in model %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td><b>{{i.table_name|capfirst}}</b></td>
+        <td>{{i.user.username}}</td>
+        <td> {{i.date}}</td>
+        <td>
+          <a href="{% url 'normal_user_form_view' i.pk %}" class='btn btn-primary'>view</a>
+
+
+        </td>
+
+      </tr>
+      {% empty %}
+      <marquee behavior="" direction=""><b class="text-danger">*Empty result</b></marquee>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'home' %}" class='btn btn-secondary'>Back</a>
+
+</div>
+{% endblock body %}

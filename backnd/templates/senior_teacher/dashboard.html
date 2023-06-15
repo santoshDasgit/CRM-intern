@@ -12,12 +12,16 @@
 <div class="row">
   <div class="col-md-8">
     <h1>Senior teachers</h1>
-    <p>Dashbord / Senior teachers dashboard</p>
+    <p>Dashbord / {{request.user}}</p>
   </div>
   <div class="col-md-4">
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
       Add user
      </button>
+
+     <a type="button" href="{% url 'html_form_list' %}" class="btn btn-primary" >
+      Form
+     </a>
   
   </div>
 </div>
@@ -37,6 +41,7 @@
         <form  method="post">
           {% csrf_token %}
           {{fm}}
+         {{user_type_fm}}
           <br>
           <input type="submit" class='btn btn-secondary' value = 'create user'>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -68,7 +73,7 @@
       <tr>
         <th scope="row">{{forloop.counter}}</th>
         <td><b>{{i.id}}</b></td>
-        <td>{{i.email}}</td>
+        <td>{{i.username}}</td>
         <td>{{i.first_name|capfirst}}</td>
         <td>{{i.last_name|capfirst}}</td>
         <td class={% if i.is_active %}'text-primary'{% else %}'text-danger'{% endif %}>{{i.is_active}}</td>
